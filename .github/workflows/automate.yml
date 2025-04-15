@@ -9,6 +9,9 @@ jobs:
 
     steps: 
       - uses: actions/checkout@v3
+
+      - name: Check if secret is present
+        run: echo "${{ secrets.DOCKERTOKEN }}" | wc -c
       
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKERTOKEN }}" | docker login -u "shriradheymishra" --password-stdin
