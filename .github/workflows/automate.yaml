@@ -13,6 +13,6 @@ jobs:
             - uses: actions/checkout@v1
             - name: Build & Push Image
               run: |
-                echo ${{ secrets.DOCKERTOKEN }} | docker login -u "prateekrajgautam" --password-stdin
-                docker build -t prateekrajgautam/upesmajorproject:v0.1 .
-                docker push prateekrajgautam/upesmajorproject:v0.1
+                echo ${{ secrets.DOCKERTOKEN }} | docker login -u "shriradheymishra" --password-stdin
+                docker build -t shriradheymishra/fast_api_dockerize .
+                docker push shriradheymishra/fast_api_dockerize
