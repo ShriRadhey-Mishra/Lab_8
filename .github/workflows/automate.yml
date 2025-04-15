@@ -1,18 +1,20 @@
 name: Docker image build
 
-on: push
-    
-
+on:
+  push:
 
 jobs:
-    build:
+  build:
+    runs-on: ubuntu-latest
 
-        runs-on: ubuntu-latest
+    steps: 
+      - uses: actions/checkout@v3
+      
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKERTOKEN }}" | docker login -u "shriradheymishra" --password-stdin
 
-        steps: 
-            - uses: actions/checkout@v1
-            - name: Build & Push Image
-              run: |
-                echo ${{ secrets.DOCKERTOKEN }} | docker login -u "shriradheymishra" --password-stdin
-                docker build -t shriradheymishra/fast_api_dockerize .
-                docker push shriradheymishra/fast_api_dockerize
+      - name: Build Docker image
+        run: docker build -t shriradheymishra/fast_api_dockerize .
+
+      - name: Push Docker image
+        run: docker push shriradheymishra/fast_api_dockerize
