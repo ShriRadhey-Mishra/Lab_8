@@ -44,3 +44,57 @@ Workflow breakdown:
 Using this GitHub Actions workflow, we automated the build and deployment of our FastAPI Docker application, making our development and deployment process faster, more reliable, and efficient.
 
 ---
+
+## DevOps Lab 8 – Build using Jenkins  
+[https://github.com/ShriRadhey-Mishra/Lab_8.git]
+
+Jenkins is an open-source automation server that helps automate parts of the software development process, especially building, testing, and deploying. Unlike GitHub Actions, which is cloud-native and tightly integrated with GitHub, Jenkins provides a flexible, self-hosted solution for CI/CD workflows.
+
+In this lab, we configured a Jenkins pipeline to automate the build and deployment of our Dockerized FastAPI Python application. On every code push or manual build trigger, Jenkins fetches the code, builds a Docker image, and pushes it to Docker Hub.
+
+### Pipeline Job:
+We created a Pipeline Job in Jenkins to define our build steps in code (using a `Jenkinsfile`):
+
+1. `agent any`: Tells Jenkins to run the pipeline on any available agent node.  
+2. **Stage: Checkout** – Checks out the source code from the connected Git repository.  
+3. **Stage: Docker Login** – Logs into Docker Hub using credentials configured in Jenkins Credential Manager.  
+4. **Stage: Build Docker Image** – Builds the Docker image from the Dockerfile in the project directory.  
+5. **Stage: Push Docker Image** – Pushes the built image to our Docker Hub repository.
+
+### Reference Jenkinsfile:
+```groovy
+pipeline {
+    agent any
+
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds') // Jenkins credentials ID
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/your-username/your-repo.git'
+            }
+        }
+
+        stage('Docker Login') {
+            steps {
+                sh "echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin"
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t yourdockerhubusername/fast_api_dockerize .'
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                sh 'docker push yourdockerhubusername/fast_api_dockerize'
+            }
+        }
+    }
+}
+
+---
